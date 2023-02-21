@@ -25,12 +25,12 @@ jobs:
 
       - name: Commit
         run: |
-        git config --global user.email 1134481134@qq.com
-        git config --global user.name MrWang6w
-        git add .
-        #git commit -m"action:`date +'%Y-%m-%d'`"
-        git commit -m"action:`date`"
-        git pull --rebase
+         git config --global user.email 1134481134@qq.com
+         git config --global user.name MrWang6w
+         git add .
+         #git commit -m"action:`date +'%Y-%m-%d'`"
+         git commit -m"action:`date`"
+         git pull --rebase
       
       - name: Push changes
         uses: ad-m/github-push-action@master
