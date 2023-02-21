@@ -2,9 +2,15 @@
 
 name: GitHub Actions CheckIp
 
+# on:
+#   schedule:
+#     - cron: '* 6 * * *'
+
 on:
-  schedule:
-    - cron: '* 6 * * *'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
