@@ -1,0 +1,31 @@
+name: GitHub Actions CheckIp
+on:
+  schedule:
+    - cron: '0 /10 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+     - name: install
+       run: npm install
+     - name: run to check
+       run: npm run start
+
+     - name: Commit
+      run: |
+        git config --global user.email 1134481134@qq.com
+        git config --global user.name MrWang6w
+        git add .
+        #git commit -m"action:`date +'%Y-%m-%d'`"
+        git commit -m"action:`date`"
+        git pull --rebase
+     - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+

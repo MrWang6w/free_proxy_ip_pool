@@ -1,6 +1,7 @@
 const tunnel = require('tunnel');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const fs = require('fs');
 const _ = require('lodash')
 const defaultHeaders = {
   accept:
@@ -44,6 +45,7 @@ class getIpPools {
     console.log('this.ipList:', this.ipList);
     await this.checkIp(this.ipList)
     console.log('this.successList:', this.successList);
+    this.toDeskop()
   }
 
   async getProxyIps(url) {
@@ -104,7 +106,11 @@ class getIpPools {
       }
     }
   }
+
+   toDeskop(){
+    fs.writeFileSync(`./result.json`, JSON.stringify(this.successList),'utf-8');
+  }
 }
 
 const work = new getIpPools();
-work.toMultithreading()
+work.toMultithreading();
