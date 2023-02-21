@@ -2,7 +2,6 @@ const tunnel = require('tunnel');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const _ = require('lodash')
-const baseUrl = 'https://www.xiaoxiangdaili.com'
 const defaultHeaders = {
   accept:
     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -21,77 +20,91 @@ const defaultHeaders = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
 };
 
-//目标大象代理
-//https://www.xiaoxiangdaili.com/free/list
+//目标快代理
+//https://www.kuaidaili.com/free/inha/
 
-//获取最新一天Url
-async function getTodayUrl() {
-  const { data: list } = await axios({
-    url: 'https://www.xiaoxiangdaili.com/free/list',
-    header: defaultHeaders,
-  });
-  const $ = cheerio.load(list);
-  let mainList = []
-  $('#main > .blogTop > .panel ').each((i, e) => {
-    const content = $(e)?.find('.clearfix') || {}
-    const { href = '' } = content?.attr()
-    const title = content?.find('.title').text()
-    if (!_.isEmpty(href) && !_.isEmpty(title)) {
-      mainList = [...mainList, {
-        url: `${baseUrl}${href}`,
-        title,
-        href
-      }]
+
+class getIpPools {
+  constructor() {
+    this.ipList = [];
+    this.successList = [];
+    this.getLength = 0
+  }
+
+  async toMultithreading() {
+    const tasks = [
+      ...new Array(5).fill('').map((__, i) => `https://www.kuaidaili.com/free/inha/${i + 1}`),
+      ... new Array(5).fill('').map((__, i) => `https://www.kuaidaili.com/free/intr/${i + 1}`)
+    ]
+    for (const url of tasks) {
+      const data = await this.getProxyIps(url)
+      this.ipList = [...this.ipList, ...data]
     }
-  })
-  // console.log('mainList:', mainList);
-  return _.get(mainList, '[0]', {})
+    this.getLength = this.ipList.length;
+    console.log('this.ipList:', this.ipList);
+    await this.checkIp(this.ipList)
+    console.log('this.successList:', this.successList);
+  }
+
+  async getProxyIps(url) {
+    try {
+      const { data: result } = await axios({
+        url,
+        headers: defaultHeaders,
+      })
+      const $ = cheerio.load(result);
+      let list = []
+      $('#list .table tbody tr').each((i, e) => {
+        let obj = {}
+        $(e).children().each((x, y) => {
+          switch (x) {
+            case 0:
+              obj.host = $(y).text()
+              break;
+            case 1:
+              obj.port = $(y).text()
+              break;
+            case 4:
+              obj.city = $(y).text()
+              break;
+            case 2:
+              obj.type = $(y).text()
+              break;
+
+            default:
+              break;
+          }
+        })
+        list.push(obj)
+      })
+      return list
+    } catch (error) {
+      return []
+    }
+  }
+
+  //检测ip质量
+  async checkIp(list) {
+    for (const item of list) {
+      try {
+       await axios({
+          url: 'https://www.baidu.com/',
+          headers: defaultHeaders,
+          proxy: false,
+          httpsAgent: tunnel.httpsOverHttp({
+            proxy: _.pick(item, ['host', 'port'])
+          }),
+          httpAgent: tunnel.httpOverHttp({
+            proxy: _.pick(item, ['host', 'port'])
+          }),
+          timeout: 3000
+        })
+        this.successList.push(item)
+      } catch (error) {
+      }
+    }
+  }
 }
 
-//获取代理
-async function getProxyIps() {
-  const { url } = await getTodayUrl();
-  const { data: result } = await axios({
-    url,
-    header: defaultHeaders,
-  })
-  const $ = cheerio.load(result);
-  const originLength = $('.freeProxyInfo tr').length;
-  let list = []
-  $('.freeProxyInfo tr').each((i, e) => {
-    let obj = {}
-     $(e).children().each((x,y)=>{
-       switch (x) {
-         case 0:
-           obj.ip = $(y).text()
-           break;
-         case 1:
-           obj.port = $(y).text()
-           break;
-         case 2:
-           obj.city = $(y).text()
-           break;
-         case 3:
-           obj.type = $(y).text()
-           break;
-       
-         default:
-           break;
-       }
-    })
-    list.push(obj)
-  })
-  console.log('list:', list);
-}
-
-
-getProxyIps()
-// axios('https://www.lilnong.top/cors/sf2',{
-//          proxy: false,
-//          httpsAgent: tunnel.httpsOverHttp({proxy:{
-//              host: '8.8.8.8',//代理服务器域名或者ip
-//              port: 80 //代理服务器端口
-//          }})
-//      })
-//      .then(v=>console.log(JSON.stringify(v.data)))
-//      .catch(v=>console.log(v.message))
+const work = new getIpPools();
+work.toMultithreading()
