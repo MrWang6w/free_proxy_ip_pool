@@ -12,33 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.9
+     - uses: actions/checkout@v2
+     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install dependencies
+     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install requests
         #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         #
-    - name: Update zhihu
+     - name: Update zhihu
       run: |
         cd zhihu
         sh run.sh
 
-    - name: Update lanpang on bilibili
+     - name: Update lanpang on bilibili
       run: |
         cd bilibili/lanpang
         sh run.sh
 
-    - name: Update guodong on bilibili
+     - name: Update guodong on bilibili
       run: |
         cd bilibili/guodong
         sh run.sh
 
-    - name: Commit
+     - name: Commit
       run: |
         git config --global user.email guodongxiaren@163.com
         git config --global user.name guodongxiaren
@@ -47,7 +47,7 @@ jobs:
         git commit -m"action:`date`"
         git pull --rebase
 
-    - name: Push changes
+     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
