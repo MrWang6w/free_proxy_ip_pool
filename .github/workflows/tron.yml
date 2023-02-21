@@ -19,6 +19,7 @@ jobs:
           node-version: 14
       - name: install
        run: npm install
+      
       - name: run to check
        run: npm run start
 
@@ -30,6 +31,7 @@ jobs:
         #git commit -m"action:`date +'%Y-%m-%d'`"
         git commit -m"action:`date`"
         git pull --rebase
+      
       - name: Push changes
       uses: ad-m/github-push-action@master
       with:
