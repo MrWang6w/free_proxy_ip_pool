@@ -45,8 +45,8 @@ class getIpPools {
     }
     this.getLength = this.ipList.length;
     console.log('this.ipList:', this.ipList);
-    await this.checkIp(this.ipList)
-    console.log('this.successList:', this.successList);
+    // await this.checkIp(this.ipList)
+    // console.log('this.successList:', this.successList);
     this.toDeskop()
   }
 
@@ -110,7 +110,7 @@ class getIpPools {
   }
 
    toDeskop(){
-    fs.writeFileSync(`./result.json`, JSON.stringify(this.successList),'utf-8');
+    fs.writeFileSync(`./result.json`, JSON.stringify(this.ipList),'utf-8');
   }
 }
 
