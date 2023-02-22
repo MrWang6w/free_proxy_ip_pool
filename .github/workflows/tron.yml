@@ -10,7 +10,7 @@ on: [push]
 jobs:
   checkIP:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v3
@@ -27,18 +27,22 @@ jobs:
       
       - name: run to check
         run: npm run start
-      - name: Commit
-        run: |
-         git config --global user.name "Mrwang6w"
-         git config --global user.email "1134481134@qq.com"
-         git add .
-         git commit -m "action:`date`" 
-         git push origin master 
+      # - name: Commit
+      #   run: |
+      #    git config --global user.name "Mrwang6w"
+      #    git config --global user.email "1134481134@qq.com"
+      #    git add .
+      #    git commit -m "action:`date`" 
+      #    git push origin master 
       
-      - name: Push
+      - name: Pushing to production branch
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
+          directory: github/workspace
+          branch: master
+          message: action:`date`
+          author_name: MinifyAction[bot]
+          author_email: amireshoon-minifyAction@users.noreply.github.com
+          force: true
 
