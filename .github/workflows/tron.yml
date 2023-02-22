@@ -6,12 +6,15 @@ name: CheckIp
 
 on: [push]
 
-permissions: read-all|write-all
 
 jobs:
   checkIP:
 
     runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v3
