@@ -33,11 +33,12 @@ jobs:
          git config --global user.name "Mrwang6w"
          git config --global user.email "1134481134@qq.com"
          git add .
-         git commit -m -a "action:`date`" 
+         git commit -m "action:`date`" 
       
       - name: Push
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           ssh: true
+          branch: ${{ github.head_ref }}
 
