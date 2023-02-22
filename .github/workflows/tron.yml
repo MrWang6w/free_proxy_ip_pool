@@ -15,8 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
-          persist-credentials: true 
+          persist-credentials: false 
 
       - name: Set up nodejs
         uses: actions/setup-node@v3
@@ -40,4 +39,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           branch: ${{ github.head_ref }}
+        - name: Deploy 🚀 # 部署
+          uses: JamesIves/github-pages-deploy-action@v4.3.3
+          with:
+          branch: master # 部署后提交到的分支
 
