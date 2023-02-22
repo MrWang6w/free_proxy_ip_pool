@@ -3,8 +3,11 @@ name: CheckIp
 on:
   schedule:
     - cron: '* 6 * * *'
-    
-on: [push]
+
+on:
+  push:
+    branches:
+     - main
 
 jobs:
   check:
