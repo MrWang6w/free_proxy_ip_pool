@@ -15,9 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
-          persist-credentials: false 
-          fetch-depth: 0 
+          ref: ${{ github.ref }}
+          persist-credentials: true 
 
       - name: Set up nodejs
         uses: actions/setup-node@v3
@@ -39,6 +38,6 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          ssh: true
+          force: true
           branch: ${{ github.head_ref }}
 
