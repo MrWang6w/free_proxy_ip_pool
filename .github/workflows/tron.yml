@@ -32,6 +32,8 @@ jobs:
          git config --global user.email "1134481134@qq.com"
          git add .
          git commit -m "action:`date`" 
+         git pull
+         git push origin
       
       - name: Push
         uses: actions-js/push@master
@@ -39,6 +41,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
           branch: ${{ github.head_ref }}
+
       - name: Deploy 🚀 # 部署
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
