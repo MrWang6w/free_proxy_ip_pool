@@ -34,22 +34,11 @@ jobs:
       #    git add .
       #    git commit -m"action:`date`"
       
-      # - name: Commit && Push changes
-      #   uses: actions-js/push@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: 'master'
-      #     message: 'bot-action'
-      - name: Commit
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          npm version patch -m "[RELEASE] %s"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Commit && Push changes
+        uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-      - uses: fastify/github-action-merge-dependabot@v2.1.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'master'
+          message: 'bot-action'
+          author_email: '1134481134@qq.com'
+          author_name: 'MrWang6w'
