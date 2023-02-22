@@ -110,7 +110,8 @@ class getIpPools {
   }
 
    toDeskop(){
-    fs.writeFileSync(`./result.json`, JSON.stringify(this.ipList),'utf-8');
+    fs.writeFileSync(`./result${Date.now()}.json`, JSON.stringify(this.ipList),'utf-8');
+    console.log('写入成功:');
   }
 }
 
