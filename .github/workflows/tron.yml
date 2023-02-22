@@ -1,11 +1,13 @@
 name: CheckIp
 
-on:
-  schedule:
-    - cron: '* 6 * * *'
+# on:
+#   schedule:
+#     - cron: '* 6 * * *'
+
+on: [push]
 
 jobs:
-  check:
+  checkIP:
 
     runs-on: ubuntu-latest
 
