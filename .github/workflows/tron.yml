@@ -27,19 +27,19 @@ jobs:
       
       - name: run to check
         run: npm run start
-      # - name: Commit
-      #   run: |
-      #    git config --global user.name "Mrwang6w"
-      #    git config --global user.email "1134481134@qq.com"
-      #    git add .
-      #    git commit -m "action:`date`" 
-      #    git push origin master 
+      - name: Commit
+        run: |
+         git clone https://github.com/MrWang6w/free_proxy_ip_pool.git
+         git config --global user.name "Mrwang6w"
+         git config --global user.email "1134481134@qq.com"
+         git add .
+         git commit -m "action:`date`" 
+         git push origin master 
       
       - name: Pushing to production branch
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          directory: github/workspace
           branch: master
           message: action:`date`
           author_name: MinifyAction[bot]
