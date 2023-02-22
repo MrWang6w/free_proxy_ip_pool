@@ -115,7 +115,7 @@ class getIpPools {
 
   toDeskop() {
     fs.writeFileSync(
-      `./result${Date.now()}.json`,
+      `./result.json`,
       JSON.stringify(this.ipList),
       'utf-8'
     );
