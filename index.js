@@ -2,7 +2,7 @@ const tunnel = require('tunnel');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
-const _ = require('lodash')
+const _ = require('lodash');
 const defaultHeaders = {
   accept:
     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -18,36 +18,38 @@ const defaultHeaders = {
   'upgrade-insecure-requests': '1',
   Referer: 'https://www.xiaoxiangdaili.com/',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
 };
-
-
 
 //目标 快代理
 //https://www.kuaidaili.com/free/inha/
-
 
 class getIpPools {
   constructor() {
     this.ipList = [];
     this.successList = [];
-    this.getLength = 0
+    this.getLength = 0;
   }
 
   async toMultithreading() {
     const tasks = [
-      ...new Array(5).fill('').map((__, i) => `https://www.kuaidaili.com/free/inha/${i + 1}`),
-      ... new Array(5).fill('').map((__, i) => `https://www.kuaidaili.com/free/intr/${i + 1}`)
-    ]
+      ...new Array(5)
+        .fill('')
+        .map((__, i) => `https://www.kuaidaili.com/free/inha/${i + 1}`),
+      ...new Array(5)
+        .fill('')
+        .map((__, i) => `https://www.kuaidaili.com/free/intr/${i + 1}`),
+    ];
     for (const url of tasks) {
-      const data = await this.getProxyIps(url)
-      this.ipList = [...this.ipList, ...data]
+      const data = await this.getProxyIps(url);
+      this.ipList = [...this.ipList, ...data];
     }
     this.getLength = this.ipList.length;
     console.log('this.ipList:', this.ipList);
     // await this.checkIp(this.ipList)
     // console.log('this.successList:', this.successList);
-    this.toDeskop()
+    this.toDeskop();
   }
 
   async getProxyIps(url) {
@@ -55,35 +57,38 @@ class getIpPools {
       const { data: result } = await axios({
         url,
         headers: defaultHeaders,
-      })
+        timeout: 3000,
+      });
       const $ = cheerio.load(result);
-      let list = []
+      let list = [];
       $('#list .table tbody tr').each((i, e) => {
-        let obj = {}
-        $(e).children().each((x, y) => {
-          switch (x) {
-            case 0:
-              obj.host = $(y).text()
-              break;
-            case 1:
-              obj.port = $(y).text()
-              break;
-            case 4:
-              obj.city = $(y).text()
-              break;
-            case 2:
-              obj.type = $(y).text()
-              break;
+        let obj = {};
+        $(e)
+          .children()
+          .each((x, y) => {
+            switch (x) {
+              case 0:
+                obj.host = $(y).text();
+                break;
+              case 1:
+                obj.port = $(y).text();
+                break;
+              case 4:
+                obj.city = $(y).text();
+                break;
+              case 2:
+                obj.type = $(y).text();
+                break;
 
-            default:
-              break;
-          }
-        })
-        list.push(obj)
-      })
-      return list
+              default:
+                break;
+            }
+          });
+        list.push(obj);
+      });
+      return list;
     } catch (error) {
-      return []
+      return [];
     }
   }
 
@@ -91,26 +96,29 @@ class getIpPools {
   async checkIp(list) {
     for (const item of list) {
       try {
-       await axios({
+        await axios({
           url: 'https://www.baidu.com/',
           headers: defaultHeaders,
           proxy: false,
           httpsAgent: tunnel.httpsOverHttp({
-            proxy: _.pick(item, ['host', 'port'])
+            proxy: _.pick(item, ['host', 'port']),
           }),
           httpAgent: tunnel.httpOverHttp({
-            proxy: _.pick(item, ['host', 'port'])
+            proxy: _.pick(item, ['host', 'port']),
           }),
-          timeout: 3000
-        })
-        this.successList.push(item)
-      } catch (error) {
-      }
+          timeout: 3000,
+        });
+        this.successList.push(item);
+      } catch (error) {}
     }
   }
 
-   toDeskop(){
-    fs.writeFileSync(`./result${Date.now()}.json`, JSON.stringify(this.ipList),'utf-8');
+  toDeskop() {
+    fs.writeFileSync(
+      `./result${Date.now()}.json`,
+      JSON.stringify(this.ipList),
+      'utf-8'
+    );
     console.log('写入成功:');
   }
 }
