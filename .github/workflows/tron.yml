@@ -39,5 +39,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'master'
-          persist-credentials: false 
-          fetch-depth: 0 
+      - name: git push
+        run: git push
