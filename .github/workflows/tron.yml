@@ -29,15 +29,14 @@ jobs:
         run: npm run start
       - name: Commit
         run: |
-         git config --global user.name Mrwang6w
-         git config --global user.email 1134481134@qq.com
+         git config --global user.name "Mrwang6w"
+         git config --global user.email "1134481134@qq.com"
          git add .
-         git commit -m"action:`date`"
+         git commit -m "action:`date`" -a
       
-      - name: Commit && Push changes
+      - name: Push
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository: https://github.com/MrWang6w/free_proxy_ip_pool.git
-          directory: .
+          branch: master
 
