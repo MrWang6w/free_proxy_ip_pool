@@ -1,11 +1,8 @@
 name: CheckIp
 
-# on:
-#   schedule:
-#     - cron: '* 6 * * *'
-
-on: [push]
-
+on:
+  schedule:
+    - cron: '* 6 * * *'
 
 jobs:
   checkIP:
