@@ -6,6 +6,8 @@ name: CheckIp
 
 on: [push]
 
+permissions: read-all|write-all
+
 jobs:
   checkIP:
 
@@ -35,5 +37,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         github_token: ${{ secrets.GITHUB_TOKEN }}
 
