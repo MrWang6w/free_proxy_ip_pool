@@ -1,15 +1,13 @@
-#github Actions
+name: CheckIp
 
-name: GitHub Actions CheckIp
-
-# on:
-#   schedule:
-#     - cron: '* 6 * * *'
-
+on:
+  schedule:
+    - cron: '* 6 * * *'
+    
 on: [push]
 
 jobs:
-  build:
+  check:
 
     runs-on: ubuntu-latest
 
