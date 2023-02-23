@@ -27,8 +27,6 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v4
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          branch: master
           message:  "auto push action:`date`" 
           add: "*"
         env:
