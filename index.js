@@ -84,7 +84,9 @@ class getIpPools {
                 break;
             }
           });
-        list.push(obj);
+        list.push({
+          ...obj, time: new Date().toLocaleString()
+        });
       });
       return list;
     } catch (error) {
@@ -109,7 +111,7 @@ class getIpPools {
           timeout: 3000,
         });
         this.successList.push(item);
-      } catch (error) {}
+      } catch (error) { }
     }
   }
 
