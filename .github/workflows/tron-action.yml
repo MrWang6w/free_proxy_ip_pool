@@ -2,7 +2,7 @@ name: CheckIp
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/10 * * * *'
 
 jobs:
   checkIP:
@@ -27,7 +27,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v4
         with:
-          message:  "auto push action:`date`" 
+          message:  Auto update  at  $(date +"%m-%d %H:%M")
           add: "*"
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
