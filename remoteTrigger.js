@@ -3,7 +3,7 @@ const { Octokit } = require('octokit');
 const _ = require('lodash');
 async function testRun() {
   const octokit = new Octokit({
-    auth: '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',
+    auth: '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',
   });
 
   const { data: logsData } = await octokit.request(
