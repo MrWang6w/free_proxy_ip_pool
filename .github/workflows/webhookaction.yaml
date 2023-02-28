@@ -23,7 +23,7 @@ jobs:
         run: npm install
       
       - name: run to check
-        run: npm run test
+        run: npm run test 
       - name: Commit changes
         uses: EndBug/add-and-commit@v4
         with:
