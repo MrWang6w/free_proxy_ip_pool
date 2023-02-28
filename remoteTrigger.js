@@ -3,7 +3,7 @@ const { Octokit } = require('octokit');
 const _ = require('lodash');
 async function testRun() {
   const octokit = new Octokit({
-    auth: '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',
+    auth: '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',
   });
 
   const { data: logsData } = await octokit.request(
@@ -19,18 +19,14 @@ async function testRun() {
     (x) => x.name.indexOf('webhook') !== -1
   );
 
-  const data = await octokit.request(
-    'POST /repos/{owner}/{repo}/dispatches',
-    {
-      owner: 'MrWang6w',
-      repo: 'free_proxy_ip_pool',
-      event_type: 'webhook-run',
-      client_payload:{
-        logLevel: 111,
-
-      }
-    }
-  );
+  const data = await octokit.request('POST /repos/{owner}/{repo}/dispatches', {
+    owner: 'MrWang6w',
+    repo: 'free_proxy_ip_pool',
+    event_type: 'webhook-run',
+    client_payload: {
+      logLevel: 111,
+    },
+  });
   // const data = await octokit.request(
   //   'POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches',
   //   {
