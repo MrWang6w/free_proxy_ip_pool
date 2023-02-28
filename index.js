@@ -47,9 +47,6 @@ class getIpPools {
     }
     this.getLength = this.ipList.length;
     console.log('this.ipList:', this.ipList);
-    await this.checkIp(this.ipList)
-    console.log('this.successList:', this.successList);
-    this.toDeskop();
   }
 
   async getProxyIps(url) {
@@ -85,7 +82,8 @@ class getIpPools {
             }
           });
         list.push({
-          ...obj, time: new Date().toLocaleString()
+          ...obj,
+          time: new Date().toLocaleString(),
         });
       });
       return list;
@@ -115,7 +113,10 @@ class getIpPools {
     }
   }
 
-  toDeskop() {
+  async toDefaultRun() {
+    await this.toMultithreading();
+    await this.checkIp(this.ipList);
+    console.log('this.successList:', this.successList);
     fs.writeFileSync(
       `./result.json`,
       JSON.stringify(this.successList),
@@ -123,7 +124,23 @@ class getIpPools {
     );
     console.log('写入成功:');
   }
+
+  async toTestRun() {
+    await this.toMultithreading();
+    fs.writeFileSync(
+      `./${Date.now()}.json`,
+      JSON.stringify(this.ipList),
+      'utf-8'
+    );
+    console.log('写入成功:');
+  }
 }
 
 const work = new getIpPools();
-work.toMultithreading();
+
+const method = process.argv[2]
+console.log('method:', method);
+if(!_.isEmpty(method)){
+  work[method]()
+
+}
