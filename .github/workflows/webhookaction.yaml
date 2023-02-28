@@ -10,10 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
       - uses: actions/checkout@v3
         with:
           persist-credentials: false 
           token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: printInputs
+        run: |
+         echo "Log level: ${{ github.event.inputs.logLevel }}"
 
       - name: Set up nodejs
         uses: actions/setup-node@v3

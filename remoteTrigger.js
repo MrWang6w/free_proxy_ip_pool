@@ -8,7 +8,12 @@ async function trigger() {
       Authorization: `token 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`,
     },
     method: 'post',
-    data: { event_type: 'webhook-run' },
+    data: {
+      event_type: 'webhook-run', 
+      inputs: {
+        logLevel: 111
+      }
+    },
   });
   console.log('data:', data);
 }
